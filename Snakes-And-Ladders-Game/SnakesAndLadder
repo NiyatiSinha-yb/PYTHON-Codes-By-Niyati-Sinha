@@ -1,0 +1,426 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled3.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOJ22/CT1L62E2iF35mNdWg",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Niyati-Sinha/PYTHON-Codes-By-Niyati-Sinha/blob/master/Snakes-And-Ladders-Game/SnakesAndLadder\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "tXSrwrqEma-E"
+      },
+      "source": [
+        "IMPORTING Libraries"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "ZsBZQe3alu3C"
+      },
+      "source": [
+        "# importing \"random\" for random operations \r\n",
+        "import random \r\n",
+        "import sys\r\n",
+        "  \r\n",
+        "# using choice() to generate a random number from a  \r\n",
+        "# given list of numbers. \r\n",
+        "#print (random.choice([1, 2, 3, 4, 5, 6])) "
+      ],
+      "execution_count": 1,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "V91iJlTBmmLL"
+      },
+      "source": [
+        "DECLARING GLOBAL OBJECTS"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "gB4NApMPmtbG"
+      },
+      "source": [
+        "dice=[1,2,3,4,5,6]\r\n",
+        "#random.choice(dice)\r\n",
+        "\r\n",
+        "#startA, startB = 0, 0\r\n",
+        "#finalB, finalB = 0, 0\r\n",
+        "\r\n",
+        "destination = 100\r\n",
+        "win=0 #to be updated to 1 when someone wins the game\r\n",
+        "\r\n",
+        "snakes = { 17:7, 54:34, 62:19, 98:79 }\r\n",
+        "ladders = {3:38, 24:33, 42:93, 72:84}"
+      ],
+      "execution_count": 2,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "DIhezs7Rqn7d"
+      },
+      "source": [
+        "INPUT PLAYER DATA"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "eIh9XesJqqaX",
+        "outputId": "4f5af9f3-6fdd-480e-935c-9aa11bbbbc7e"
+      },
+      "source": [
+        "print(\"##### Welcome to Snakes & Ladders Game #####\")\r\n",
+        "playerA=input(\"Player 1 Input Your Name : \")\r\n",
+        "playerB=input(\"Player 1 Input Your Name : \")"
+      ],
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "##### Welcome to Snakes & Ladders Game #####\n",
+            "Player 1 Input Your Name : A\n",
+            "Player 1 Input Your Name : B\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7QH5sBdlFto3"
+      },
+      "source": [
+        "location={ playerA : 0 , playerB: 0 }"
+      ],
+      "execution_count": 4,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "F2qZrD-xnFX9"
+      },
+      "source": [
+        "def winner(player):\r\n",
+        "  print(f'Congratulations! {player} has won this game.' )\r\n"
+      ],
+      "execution_count": 5,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "tUUjbcBgnrOs"
+      },
+      "source": [
+        "def looser(player):\r\n",
+        "  print(f'Hi {player}! Not every game you loose is lost, Better luck next time.')"
+      ],
+      "execution_count": 6,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "NAiaQYXEsUaK"
+      },
+      "source": [
+        "def roll(player):\r\n",
+        "  \r\n",
+        "  val = random.choice(dice)\r\n",
+        "  print(f'initial position = {location[player]}\\nvalue on dice = {val}')\r\n",
+        "  expectedPos = location[player] + val\r\n",
+        "  \r\n",
+        "  if expectedPos in snakes.keys():\r\n",
+        "    location[player] = snakes[expectedPos]\r\n",
+        "    print(\"Opps! Snake Bite\")\r\n",
+        "  \r\n",
+        "  elif expectedPos in ladders.keys():\r\n",
+        "    location[player] = ladders[expectedPos]\r\n",
+        "    print(\"Yeah! Ladder\")\r\n",
+        "\r\n",
+        "  elif (expectedPos == destination):\r\n",
+        "    winner(player)\r\n",
+        "\r\n",
+        "  else:\r\n",
+        "  #elif (expectedPos < destination):\r\n",
+        "    location[player] += val\r\n",
+        "    #print(location[player])\r\n"
+      ],
+      "execution_count": 7,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "920BtNVxxKld"
+      },
+      "source": [
+        "def quitGame(player):\r\n",
+        "  print(f'Opps! {player} left the game')\r\n",
+        "  looser(player)\r\n",
+        "  #sys.exit()\r\n",
+        "  #winner()\r\n"
+      ],
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "VEiL_hIt4yxc"
+      },
+      "source": [
+        "def play(player):\r\n",
+        "    print(\"Welcome to Play fun\")\r\n",
+        "    options={'roll':roll,'quit':quitGame}\r\n",
+        "    options[input(\"Input task: \")](player)\r\n",
+        "    print(location[player])"
+      ],
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "uGw0ThHHrnpR"
+      },
+      "source": [
+        "TURN: player A"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "g33Qolyfrwja"
+      },
+      "source": [
+        "def turnA():\r\n",
+        "  print(f'\\n{playerA} its your turn :')\r\n",
+        "  play(playerA)"
+      ],
+      "execution_count": 10,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "r2QD2kekrws-"
+      },
+      "source": [
+        "TURN: player B"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "rAyfttAkry0v"
+      },
+      "source": [
+        "def turnB():\r\n",
+        "  print(f'\\n{playerB} its your turn :')\r\n",
+        "  play(playerB)"
+      ],
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "7wehdH0WxuOT"
+      },
+      "source": [
+        "turn={playerA : turnA, playerB : turnB}\r\n",
+        "#type(turn)"
+      ],
+      "execution_count": 12,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "JaENlep3muHu"
+      },
+      "source": [
+        "CHOOSING GAME MODE"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "3U7TPou6l03U"
+      },
+      "source": [
+        "#choose Mode\r\n",
+        "def chooseMode():\r\n",
+        "    print(\"Enter the mode you want to play in: 1.Auto 2.Manual\" )\r\n",
+        "    print(\"Enter Auto to Activate Mode 1\\nEnter Manual to Activate Mode 2\")\r\n",
+        "\r\n",
+        "    mode=input(\"Enter the Mode you want to activate: \")\r\n",
+        "    if mode == \"Auto\":\r\n",
+        "        autoMode()\r\n",
+        "    elif mode == \"Manual\":\r\n",
+        "        manualMode()\r\n",
+        "    else:\r\n",
+        "        print(\"Opps! You have entered an Invalid Mode\\nTry again\\n\\n\")\r\n",
+        "        chooseMode()"
+      ],
+      "execution_count": 13,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "B5KkBtH9rEr_"
+      },
+      "source": [
+        "Lets Start the Game!"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "5Efs_C-ErKYf"
+      },
+      "source": [
+        "def start():\r\n",
+        "  print(f'##### Lets start the Game! #####')"
+      ],
+      "execution_count": 14,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2jXI3n_Vm1FC"
+      },
+      "source": [
+        "AUTO MODE"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "RhrqAVWyl99Z"
+      },
+      "source": [
+        "def autoMode():\r\n",
+        "    print(\"Welcome to Auto Mode\")\r\n",
+        "    while(win!=1):\r\n",
+        "      for i in turn:\r\n",
+        "        if win==1:\r\n",
+        "          break\r\n",
+        "        else:\r\n",
+        "          turn[i]()\r\n"
+      ],
+      "execution_count": 15,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "lKlTPHdfm5DF"
+      },
+      "source": [
+        "MANUAL MODE"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "k-eKr00_mAvN"
+      },
+      "source": [
+        "def manualMode():\r\n",
+        "    print(\"Welcome to Manual Mode\")"
+      ],
+      "execution_count": 16,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "VYyD0yoRnAKl"
+      },
+      "source": [
+        "FUNCTION CALLING"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "jobkAUXRmC0C",
+        "outputId": "f12db3bc-dd7a-4c2b-e559-01550649284d"
+      },
+      "source": [
+        "chooseMode()"
+      ],
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Enter the mode you want to play in: 1.Auto 2.Manual\n",
+            "Enter Auto to Activate Mode 1\n",
+            "Enter Manual to Activate Mode 2\n",
+            "Enter the Mode you want to activate: Auto\n",
+            "Welcome to Auto Mode\n",
+            "\n",
+            "A its your turn :\n",
+            "Welcome to Play fun\n",
+            "Input task: roll\n",
+            "initial position = 0\n",
+            "value on dice = 5\n",
+            "5\n",
+            "\n",
+            "B its your turn :\n",
+            "Welcome to Play fun\n",
+            "Input task: quit\n",
+            "Opps! B left the game\n",
+            "Hi B! Not every game you loose is lost, Better luck next time.\n",
+            "0\n",
+            "\n",
+            "A its your turn :\n",
+            "Welcome to Play fun\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    }
+  ]
+}
